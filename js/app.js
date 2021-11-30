@@ -15,4 +15,19 @@ function buildTable(data) {
            cell.text(val);
        });
     });
-}
+};
+
+function handleClick(){
+    //selects datetime value
+    let date = d3.select("#datetime").property("value");
+    let filteredData = tableData;
+    //check to see if date was entered and filter using that date
+    if (date) {
+        //apply filter where table data for datetime matches filter value
+        filteredData = filteredData.filter(row => row.datetime === date);
+    };
+    buildTable(filteredData);
+};
+
+d3.selectAll("#filter-btn").on("click", handleClick);
+buildTable(tableData);
