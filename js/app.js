@@ -1,16 +1,17 @@
 // from data.js
-const tableData = data;
+var tableData = data;
+filteredData = tableData;
 
 // get table references
 var tbody = d3.select("tbody");
 
-function buildTable(data) {
+function buildTable() {
   // First, clear out any existing data
   tbody.html("");
 
   // Next, loop through each object in the data
   // and append a row and cells for each value in the row
-  data.forEach((dataRow) => {
+  filteredData.forEach((dataRow) => {
     // Append a row to the table body
     let row = tbody.append("tr");
 
@@ -28,6 +29,7 @@ var filters = {};
 
 // 3. Use this function to update the filters. 
 function updateFilters() {
+
 
     // 4a. Save the element that was changed as a variable.
     let changedElement = d3.select(this);
@@ -53,39 +55,59 @@ function updateFilters() {
   function filterTable() {
   
     // 8. Set the filtered data to the tableData.
-    let filteredData = tableData;
+    filteredData = tableData;
   
     // 9. Loop through all of the filters and keep any data that
     // matches the filter values
-    Object.entries(filters).forEach(([filterID, elementValue]) => {
-        if (filters[filterID] != "") {
-            filteredData = filteredData.filter(entry => entry.datetime === elementValue);
-        
-        }
-        if (filters[filterID] != "") {
-                filteredData = filteredData.filter(entry => entry.city === elementValue);
-        
-            }
-        if (filters[filterID] != "") {
-                filteredData = filteredData.filter(entry => entry.state === elementValue);
-        
-            }
-        if (filters[filterID] != "") {
-                filteredData = filteredData.filter(entry => entry.country === elementValue);
-        
-            }
-        if (filters[filterID] != "") {
-                filteredData = filteredData.filter(entry => entry.shape === elementValue);
-        
-            }
-    });
-  
-    // 10. Finally, rebuild the table using the filtered data
-    buildTable(tableData);
-  };
+		
+	ctr = 0;
+	for (i=0; i < tableData.length; i++) {
+		addFlag = true; 
+		
+		if (filters.datetime != undefined) {
+			if (tableData[i].datetime.toUpperCase() != filters.datetime.toUpperCase()) {
+				addFlag = false;
+			}
+		}
+		
+		if (filters.city != undefined) {
+			if (tableData[i].city.toUpperCase() != filters.city.toUpperCase()) {
+				addFlag = false;
+			}  
+		}
+	
+		if (filters.state != undefined) {
+			if (tableData[i].state.toUpperCase() != filters.state.toUpperCase()) {
+				addFlag = false;
+			}
+		}
+		
+		if (filters.country != undefined) {
+			if (tableData[i].country.toUpperCase() != filters.country.toUpperCase()) {
+				addFlag = false;
+			}
+		}
+		
+		if (filters.shape != undefined) {
+			if (tableData[i].shape.toUpperCase() != filters.shape.toUpperCase()) {
+				addFlag = false;
+			}
+		}
+		
+		if (addFlag) {
+	
+			filteredData[ctr++] = tableData[i];
+		}	
+	}	
+	filteredData = filteredData.slice(0,ctr);
+	buildTable();
+
+  // 10. Finally, rebuild the table using the filtered data
+  //buildTable(filteredData.slice(0,10));
+  }  
   
   // 2. Attach an event to listen for changes to each filter
   d3.selectAll("input").on("change", updateFilters);
   
   // Build the table when the page loads
-  buildTable(tableData);
+  buildTable(filteredData);
