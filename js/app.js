@@ -59,6 +59,7 @@ function updateFilters() {
   
     // 9. Loop through all of the filters and keep any data that
     // matches the filter values
+<<<<<<< HEAD
 		
 	ctr = 0;
 	for (i=0; i < tableData.length; i++) {
@@ -105,6 +106,34 @@ function updateFilters() {
   // 10. Finally, rebuild the table using the filtered data
   //buildTable(filteredData.slice(0,10));
   }  
+=======
+    Object.entries(filters).forEach(([filterID, elementValue]) => {
+        if (filters[filterID] != "") {
+            filteredData = filteredData.filter(entry => entry.datetime === elementValue);
+        
+        }
+        if (filters[filterID] != "") {
+                filteredData = filteredData.filter(entry => entry.city === elementValue);
+        
+            }
+        if (filters[filterID] != "") {
+                filteredData = filteredData.filter(entry => entry.state === elementValue);
+        
+            }
+        if (filters[filterID] != "") {
+                filteredData = filteredData.filter(entry => entry.country === elementValue);
+        
+            }
+        if (filters[filterID] != "") {
+                filteredData = filteredData.filter(entry => entry.shape === elementValue);
+        
+            }
+    });
+  
+    // 10. Finally, rebuild the table using the filtered data
+    buildTable(filteredData);
+  };
+>>>>>>> 06e6764dc07e47ddafae4a819811d4ee2523b72b
   
   // 2. Attach an event to listen for changes to each filter
   d3.selectAll("input").on("change", updateFilters);
